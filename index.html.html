@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India States and Capitals Practice Test</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e67e22;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --bg-color: #f5f6fa;
+            --card-bg: #ffffff;
+            --text-color: #2f3640;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 750px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        h2 {
+            color: #7f8c8d;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-bottom: 2px solid #f1f2f6;
+            padding-bottom: 10px;
+        }
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-item {
+            background: #f1f2f6;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #dcdde1;
+            font-size: 16px;
+        }
+        .option-item:hover {
+            background: #e1e2e6;
+        }
+        .option-item.correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+            font-weight: 600;
+        }
+        .option-item.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+        .option-item.disabled {
+            pointer-events: none;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .feedback.correct-box {
+            background-color: #e2f0d9;
+            border-left: 5px solid var(--success-color);
+            color: #276a3e;
+        }
+        .feedback.incorrect-box {
+            background-color: #fce8e6;
+            border-left: 5px solid var(--error-color);
+            color: #a61c1c;
+        }
+        .nav-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            float: right;
+            transition: background 0.2s;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .nav-btn:hover {
+            background-color: #d35400;
+        }
+        .result-screen {
+            text-align: center;
+            display: none;
+        }
+        .score-display {
+            font-size: 56px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 20px 0;
+        }
+        .restart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="quiz-container">
+            <h1>India Map Master Pack</h1>
+            <h2>All 28 States & 8 Union Territories Practice Guide</h2>
+            
+            <div class="quiz-info">
+                <span id="question-number">Question 1 of 36</span>
+                <span id="score-counter">Score: 0</span>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text" id="question-html">Setting up map elements...</div>
+                <ul class="options-list" id="options-html"></ul>
+                <div class="feedback" id="feedback-html"></div>
+            </div>
+
+            <div class="clearfix">
+                <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
+            </div>
+        </div>
+
+        <div id="result-container" class="result-screen">
+            <h1>🎉 Challenge Complete!</h1>
+            <p>You have run through all states and territories of India.</p>
+            <div class="score-display" id="final-score">0 / 36</div>
+            <p id="performance-msg" style="font-size: 18px; font-weight: bold;"></p>
+            <button class="restart-btn" onclick="restartQuiz()">Restart Challenge</button>
+        </div>
+    </div>
+
+    <script>
+        var quizData = [
+            { region: "Andhra Pradesh", capital: "Amaravati", options: ["Hyderabad", "Amaravati", "Visakhapatnam", "Vijayawada"] },
+            { region: "Arunachal Pradesh", capital: "Itanagar", options: ["Dispur", "Imphal", "Itanagar", "Shillong"] },
+            { region: "Assam", capital: "Dispur", options: ["Guwahati", "Dispur", "Shillong", "Kohima"] },
+            { region: "Bihar", capital: "Patna", options: ["Ranchi", "Patna", "Gaya", "Muzaffarpur"] },
+            { region: "Chhattisgarh", capital: "Raipur", options: ["Bilaspur", "Raipur", "Ranchi", "Jabalpur"] },
+            { region: "Goa", capital: "Panaji", options: ["Margao", "Panaji", "Vasco da Gama", "Porvorim"] },
+            { region: "Gujarat", capital: "Gandhinagar", options: ["Ahmedabad", "Surat", "Gandhinagar", "Vadodara"] },
+            { region: "Haryana", capital: "Chandigarh", options: ["Gurugram", "Faridabad", "Chandigarh", "Ambala"] },
+            { region: "Himachal Pradesh", capital: "Shimla", options: ["Manali", "Dharamshala", "Shimla", "Solan"] },
+            { region: "Jharkhand", capital: "Ranchi", options: ["Jamshedpur", "Dhanbad", "Ranchi", "Bokaro"] },
+            { region: "Karnataka", capital: "Bengaluru", options: ["Mysuru", "Bengaluru", "Hubballi", "Mangaluru"] },
+            { region: "Kerala", capital: "Thiruvananthapuram", options: ["Kochi", "Kozhikode", "Thiruvananthapuram", "Thrissur"] },
+            { region: "Madhya Pradesh", capital: "Bhopal", options: ["Indore", "Bhopal", "Gwalior", "Jabalpur"] },
+            { region: "Maharashtra", capital: "Mumbai", options: ["Pune", "Nagpur", "Mumbai", "Thane"] },
+            { region: "Manipur", capital: "Imphal", options: ["Kohima", "Aizawl", "Imphal", "Shillong"] },
+            { region: "Meghalaya", capital: "Shillong", options: ["Guwahati", "Shillong", "Itanagar", "Imphal"] },
+            { region: "Mizoram", capital: "Aizawl", options: ["Aizawl", "Agartala", "Kohima", "Imphal"] },
+            { region: "Nagaland", capital: "Kohima", options: ["Dimapur", "Kohima", "Imphal", "Shillong"] },
+            { region: "Odisha", capital: "Bhubaneswar", options: ["Cuttack", "Puri", "Bhubaneswar", "Rourkela"] },
+            { region: "Punjab", capital: "Chandigarh", options: ["Amritsar", "Ludhiana", "Chandigarh", "Patiala"] },
+            { region: "Rajasthan", capital: "Jaipur", options: ["Jodhpur", "Udaipur", "Jaipur", "Kota"] },
+            { region: "Sikkim", capital: "Gangtok", options: ["Namchi", "Gangtok", "Pelling", "Darjeeling"] },
+            { region: "Tamil Nadu", capital: "Chennai", options: ["Coimbatore", "Madurai", "Chennai", "Salem"] },
+            { region: "Telangana", capital: "Hyderabad", options: ["Warangal", "Hyderabad", "Nizamabad", "Secunderabad"] },
+            { region: "Tripura", capital: "Agartala", options: ["Agartala", "Aizawl", "Imphal", "Shillong"] },
+            { region: "Uttar Pradesh", capital: "Lucknow", options: ["Kanpur", "Prayagraj", "Noida", "Lucknow"] },
+            { region: "Uttarakhand", capital: "Dehradun", options: ["Nainital", "Dehradun", "Gairsain", "Haridwar"] },
+            { region: "West Bengal", capital: "Kolkata", options: ["Howrah", "Darjeeling", "Kolkata", "Asansol"] },
+            { region: "Andaman and Nicobar Islands", capital: "Port Blair", options: ["Port Blair", "Kavaratti", "Silvassa", "Daman"] },
+            { region: "Chandigarh (UT)", capital: "Chandigarh", options: ["Panchkula", "Mohali", "Chandigarh", "Delhi"] },
+            { region: "Dadra and Nagar Haveli and Daman and Diu", capital: "Daman", options: ["Silvassa", "Daman", "Diu", "Ooty"] },
+            { region: "Lakshadweep", capital: "Kavaratti", options: ["Kavaratti", "Port Blair", "Minicoy", "Amini"] },
+            { region: "Delhi (NCT)", capital: "New Delhi", options: ["Noida", "Gurugram", "New Delhi", "Faridabad"] },
+            { region: "Puducherry", capital: "Puducherry", options: ["Karaikal", "Mahe", "Yanam", "Puducherry"] },
+            { region: "Jammu and Kashmir", capital: "Srinagar", options: ["Jammu", "Srinagar", "Leh", "Anantnag"] },
+            { region: "Ladakh", capital: "Leh", options: ["Kargil", "Leh", "Srinagar", "Jammu"] }
+        ];
+
+        var currentQuestionIndex = 0;
+        var score = 0;
+        var hasAnswered = false;
+
+        function loadQuestion() {
+            hasAnswered = false;
+            document.getElementById("next-btn").style.display = "none";
+            
+            var currentQuiz = quizData[currentQuestionIndex];
+            
+            document.getElementById("question-number").innerText = "Question " + (currentQuestionIndex + 1) + " of " + quizData.length;
+            document.getElementById("score-counter").innerText = "Score: " + score;
+            document.getElementById("question-html").innerText = "What is the capital of " + currentQuiz.region + "?";
+            
+            var feedbackBox = document.getElementById("feedback-html");
+            feedbackBox.style.display = "none";
+            feedbackBox.className = "feedback";
+
+            var optionsContainer = document.getElementById("options-html");
+            optionsContainer.innerHTML = "";
+            
+            var choices = currentQuiz.options;
+
+            for (var i = 0; i < choices.length; i++) {
+                (function(idx) {
+                    var li = document.createElement("li");
+                    li.className = "option-item";
+                    li.innerText = choices[idx];
+                    li.onclick = function() { selectOption(choices[idx], currentQuiz.capital, li); };
+                    optionsContainer.appendChild(li);
+                })(i);
+            }
+        }
+
+        function selectOption(selectedText, correctText, selectedElement) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            var feedbackBox = document.getElementById("feedback-html");
+            var allOptions = document.querySelectorAll(".option-item");
+
+            for (var j = 0; j < allOptions.length; j++) {
+                allOptions[j].classList.add("disabled");
+                if (allOptions[j].innerText === correctText) {
+                    allOptions[j].classList.add("correct");
+                }
+            }
+
+            if (selectedText === correctText) {
+                selectedElement.classList.add("correct");
+                score++;
+                document.getElementById("score-counter").innerText = "Score: " + score;
+                feedbackBox.innerText = "Correct! " + correctText + " is the capital of " + quizData[currentQuestionIndex].region + ".";
+                feedbackBox.classList.add("correct-box");
+            } else {
+                selectedElement.classList.add("incorrect");
+                feedbackBox.innerText = "Incorrect. The accurate capital of " + quizData[currentQuestionIndex].region + " is " + correctText + ".";
+                feedbackBox.classList.add("incorrect-box");
+            }
+
+            feedbackBox.style.display = "block";
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("result-container").style.display = "block";
+            document.getElementById("final-score").innerText = score + " / " + quizData.length;
+            
+            var msgElement = document.getElementById("performance-msg");
+            var percentage = (score / quizData.length) * 100;
+            
+            if (percentage === 100) {
+                msgElement.innerText = "Outstanding! Perfect 36/36 score. You know India inside out!";
+                msgElement.style.color = "var(--success-color)";
+            } else if (percentage >= 75) {
+                msgElement.innerText = "Great job! Your grasp on Indian geography is strong.";
+                msgElement.style.color = "var(--secondary-color)";
+            } else {
+                msgElement.innerText = "Good attempt! Run through it a few more times to master all territories.";
+                msgElement.style.color = "var(--error-color)";
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById("quiz-container").style.display = "block";
+            document.getElementById("result-container").style.display = "none";
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
